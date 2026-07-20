@@ -13,6 +13,7 @@ antenna/
 ├── README.md                           # This instructions document
 ├── requirements.txt                    # Project dependencies
 ├── pipeline_tracker.md                 # Status and validation log
+├── data_exploration.py                 # Command-line downloader script (Recommended)
 ├── notebooks/
 │   └── data_exploration.ipynb          # Dataset consolidation and download notebook
 └── data/
@@ -25,6 +26,7 @@ antenna/
     │   ├── ind_10072.json
     │   └── ...
     └── antenna_processed_dataset.csv   # Consolidated tabular metadata index
+
 ```
 
 ---
@@ -48,14 +50,26 @@ pip install -r requirements.txt
 ```
 
 ### 2. Download the Image Dataset
-To run the automated consolidation and crop-downloader:
-1. Ensure the raw CSV exports are located in `data/antenna_raw_data/`.
-2. Launch Jupyter Lab or Notebook:
+To run the automated consolidation and crop-downloader, ensure the raw CSV exports are located in `data/antenna_raw_data/`. 
+
+Then, choose one of the following methods to download the images:
+
+#### Option A: Run the Python Script (Recommended)
+Simply run the standalone script directly from your terminal:
+```bash
+python data_exploration.py
+```
+
+#### Option B: Run the Jupyter Notebook (Alternative)
+If you prefer using notebooks (e.g. in VS Code or JupyterLab):
+1. Start Jupyter:
    ```bash
    jupyter lab
    ```
-3. Open `notebooks/data_exploration.ipynb` and run the cells. This will merge the CSVs, filter for verified specimens, and download all target insect images directly to `data/antenna_field_images/`.
-   * *Note: The notebook script automatically checks for existing files and skips duplicates, so re-running it will not overwrite your work.*
+2. Open `notebooks/data_exploration.ipynb` and run all cells.
+
+*Note: Both methods automatically check for existing files and skip duplicates, so running them again will not overwrite your work or redownload existing images.*
+
 
 ### 3. Load & Share Annotations
 We use **X-AnyLabeling** to draw contours and label species. 
