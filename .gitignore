@@ -1,0 +1,25 @@
+# Python virtual environment
+env/
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Heavy raw datasets and images
+data/antenna_raw_data/
+data/antenna_field_images/*.jpg
+data/antenna_field_images/*.png
+data/Validation_Images/
+
+# Keep processed CSV index and JSON annotations
+!data/antenna_processed_dataset.csv
+!data/antenna_field_images/*.json
+
+# Exclude cloned tools (colleague should clone it separately)
+X-AnyLabeling/
+
+# Temporary scratch files
+scratch/

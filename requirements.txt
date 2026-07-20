@@ -1,0 +1,22 @@
+# Core Data Analysis and Preprocessing
+pandas==3.0.3
+openpyxl==3.1.5
+numpy==2.5.1
+tqdm==4.68.4
+
+# Computer Vision and Image Processing
+opencv-python==5.0.0.93
+scikit-image==0.26.0
+matplotlib==3.11.0
+
+# Machine Learning and Modeling
+scikit-learn==1.9.0
+
+# Notebook Environment
+jupyterlab==4.6.1
+notebook==7.6.0
+ipykernel==7.3.0
+
+# Annotation Tool (installed directly from GitHub)
+git+https://github.com/CVHub520/X-AnyLabeling.git
+
