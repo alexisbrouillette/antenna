@@ -81,15 +81,4 @@ To run it and load annotations:
    ```
 2. **Open Images Directory:** Click **Open Folder** in the GUI and select the `data/antenna_field_images/` directory.
 3. The tool will automatically pair the images with their sidecar `.json` files and display the existing polygons.
-
-
----
-
-## 🔄 Pipeline Phases
-
-1. **Phase 1: Validation Sandbox Calibration**
-   * Pre-flight checks and metric dimension calibration using the *InsectMorphoAI* reference dataset ($100$ specimens with paired dry-weight values).
-2. **Phase 2: Silhouette Segmentation & Masking**
-   * Isolate the outer body contours from the background trapping sheet using thresholding and morphological operations.
-3. **Phase 3: Allometric Modeling**
-   * Fit power-law scaling parameters ($M = a \cdot A^b$) to formulate regression relationships between pixel surface area and biomass.
+4. Click on the `AI` icon on the left bar and select the model. I used `MobileSAM` since it works well on my laptop but any model will do fine for the preprocessing.
