@@ -82,3 +82,25 @@ To run it and load annotations:
 2. **Open Images Directory:** Click **Open Folder** in the GUI and select the `data/antenna_field_images/` directory.
 3. The tool will automatically pair the images with their sidecar `.json` files and display the existing polygons.
 4. Click on the `AI` icon on the left bar and select the model. I used `MobileSAM` since it works well on my laptop but any model will do fine for the preprocessing.
+
+---
+
+## 🎯 Targeted Annotation Backlog Manager
+
+To avoid loading thousands of unannotated images in X-AnyLabeling, we use `annotation_backlog.py`. This script dynamically manages an active subset of images to annotate. It targets species that have **fewer than 5 annotations**, and exposes up to 8 candidate images per species (giving you options if some images have poor quality). As soon as a species reaches 5 annotations, its unannotated candidates are automatically removed from the backlog.
+
+### How to use it:
+
+1. **Populate the Backlog Workspace:**
+   Run the backlog script to automatically build a curated workspace in `data/active_annotation_set/`:
+   ```bash
+   python annotation_backlog.py
+   ```
+2. **Open in X-AnyLabeling:**
+   Launch the tool and open the folder `data/active_annotation_set/`. You will see all your existing annotations and a selection of candidate images for species that still need coverage.
+3. **Sync Your Progress Back:**
+   After you finish an annotation session, run the sync command to push all newly created `.json` files back into your master dataset directory (`data/antenna_field_images/`):
+   ```bash
+   python annotation_backlog.py sync
+   ```
+
