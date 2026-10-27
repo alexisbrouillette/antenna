@@ -9,7 +9,7 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Heavy raw datasets and images
-data/antenna_raw_data/
+#data/antenna_raw_data/
 data/antenna_field_images/*.jpg
 data/antenna_field_images/*.png
 data/Validation_Images/
@@ -23,3 +23,6 @@ X-AnyLabeling/
 
 # Temporary scratch files
 scratch/
+
+# Active annotation subset (temporary workspace)
+data/active_annotation_set/
