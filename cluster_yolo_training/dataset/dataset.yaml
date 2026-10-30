@@ -1,0 +1,14 @@
+# YOLOv8 / YOLO11 Segmentation Dataset Configuration
+# Relative paths so this works anywhere you copy the folder
+path: ./dataset
+train: images/train
+val: images/val
+
+names:
+  0: full-body
+  1: wing
+  2: leg
+  3: antenna
+  4: head
+  5: body
+

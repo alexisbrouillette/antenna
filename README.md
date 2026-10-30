@@ -46,6 +46,7 @@ python3 -m venv env
 source env/bin/activate
 
 # Install the dependencies (including X-AnyLabeling from Git)
+   
 pip install -r requirements.txt
 ```
 
