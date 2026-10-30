@@ -1,0 +1,843 @@
+{
+  "Opisthoxia formosante": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "Expanse",
+        "wing",
+        "forewing",
+        "apex",
+        "costa",
+        "Hindwing",
+        "wings"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "palpi",
+        "Head",
+        "vertex"
+      ]
+    },
+    "antenna": {
+      "present": true,
+      "keywords": [
+        "antenna",
+        "antennae",
+        "segments"
+      ]
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "legs"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "thorax",
+        "abdomen"
+      ]
+    }
+  },
+  "Choristoneura fumiferana": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "costa",
+        "wing"
+      ]
+    },
+    "head": {
+      "present": false,
+      "keywords": []
+    },
+    "antenna": {
+      "present": false,
+      "keywords": []
+    },
+    "legs": {
+      "present": false,
+      "keywords": []
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "thorax"
+      ]
+    }
+  },
+  "Campaea perlata": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "wing"
+      ]
+    },
+    "head": {
+      "present": false,
+      "keywords": []
+    },
+    "antenna": {
+      "present": false,
+      "keywords": []
+    },
+    "legs": {
+      "present": false,
+      "keywords": []
+    },
+    "body": {
+      "present": false,
+      "keywords": []
+    }
+  },
+  "Spilomela discordens": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "Expanse",
+        "wing",
+        "Primaries",
+        "tornus",
+        "Costa",
+        "secondaries",
+        "wings"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "palpi",
+        "head"
+      ]
+    },
+    "antenna": {
+      "present": true,
+      "keywords": [
+        "segments"
+      ]
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "TARS",
+        "legs"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "thorax",
+        "abdomen"
+      ]
+    }
+  },
+  "Perola sericea": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "Expanse",
+        "wing",
+        "apex",
+        "primaries",
+        "Costa",
+        "secondaries",
+        "wings"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "vertex",
+        "head"
+      ]
+    },
+    "antenna": {
+      "present": false,
+      "keywords": []
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "femora",
+        "legs"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "thorax",
+        "abdomen"
+      ]
+    }
+  },
+  "Gaudeator paidicus": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "Expanse",
+        "wing",
+        "apex",
+        "costa",
+        "tornus"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "frons",
+        "tongue",
+        "palpi"
+      ]
+    },
+    "antenna": {
+      "present": true,
+      "keywords": [
+        "segment"
+      ]
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "spur"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "abdomen"
+      ]
+    }
+  },
+  "Megalopyge": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "Expanse",
+        "wing",
+        "apex",
+        "Primaries",
+        "tornus",
+        "Costa",
+        "secondaries",
+        "wings"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "head",
+        "Eyes",
+        "Palpi",
+        "Vertex",
+        "Frons"
+      ]
+    },
+    "antenna": {
+      "present": true,
+      "keywords": [
+        "segments",
+        "antenna",
+        "antennae",
+        "pectinat"
+      ]
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "spur",
+        "tibia",
+        "Legs"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "body",
+        "thorax",
+        "collar",
+        "abdomen"
+      ]
+    }
+  },
+  "Megalopyge tharops": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "Expanse",
+        "wing",
+        "apex",
+        "Primaries",
+        "tornus",
+        "Costa",
+        "secondaries",
+        "wings"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "Frons",
+        "Palpi",
+        "Vertex",
+        "head"
+      ]
+    },
+    "antenna": {
+      "present": true,
+      "keywords": [
+        "segments",
+        "antenna",
+        "antennae",
+        "pectinat"
+      ]
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "tibia",
+        "Legs"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "body",
+        "thorax",
+        "collar",
+        "abdomen"
+      ]
+    }
+  },
+  "Perigramma guatemalaria": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "Expanse",
+        "wing",
+        "apex",
+        "costa",
+        "Forewing",
+        "Primaries",
+        "tornus",
+        "secondaries",
+        "wings"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "Palpi",
+        "vertex",
+        "head"
+      ]
+    },
+    "antenna": {
+      "present": true,
+      "keywords": [
+        "pectinat"
+      ]
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "tars",
+        "femora",
+        "tibia",
+        "legs"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "Body",
+        "thorax",
+        "abdomen"
+      ]
+    }
+  },
+  "Eacles imperialis": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "Expanse",
+        "wing",
+        "apex",
+        "costa",
+        "primaries",
+        "secondaries",
+        "wings"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "Head"
+      ]
+    },
+    "antenna": {
+      "present": true,
+      "keywords": [
+        "segments"
+      ]
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "legs"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "body",
+        "thorax",
+        "abdomen"
+      ]
+    }
+  },
+  "Hygrochroa": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "Expanse",
+        "wing",
+        "apex",
+        "primaries",
+        "Costa",
+        "secondaries",
+        "wings"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "palpi",
+        "head"
+      ]
+    },
+    "antenna": {
+      "present": false,
+      "keywords": []
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "legs"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "thorax",
+        "collar",
+        "abdomen"
+      ]
+    }
+  },
+  "Perigramma repetita": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "Expanse",
+        "wing",
+        "forewing",
+        "apex",
+        "costa",
+        "secondaries",
+        "Primaries",
+        "tornus",
+        "Hindwing",
+        "wings"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "Palpi",
+        "vertex",
+        "head"
+      ]
+    },
+    "antenna": {
+      "present": true,
+      "keywords": [
+        "antenna",
+        "antennae",
+        "pectinat"
+      ]
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "tars",
+        "femora",
+        "tibia",
+        "legs"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "Body",
+        "thorax",
+        "abdomen"
+      ]
+    }
+  },
+  "Ategumia dilecticolor": {
+    "wings": {
+      "present": false,
+      "keywords": []
+    },
+    "head": {
+      "present": false,
+      "keywords": []
+    },
+    "antenna": {
+      "present": false,
+      "keywords": []
+    },
+    "legs": {
+      "present": false,
+      "keywords": []
+    },
+    "body": {
+      "present": false,
+      "keywords": []
+    }
+  },
+  "Phostria dohrnii": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "vlugt"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "kop",
+        "Palpen"
+      ]
+    },
+    "antenna": {
+      "present": true,
+      "keywords": [
+        "Sprieten"
+      ]
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "Pooten"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "lijf"
+      ]
+    }
+  },
+  "Spilomela perspicata": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "Expanse",
+        "wing",
+        "Primaries",
+        "tornus",
+        "Costa",
+        "secondaries",
+        "wings"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "palpi",
+        "head"
+      ]
+    },
+    "antenna": {
+      "present": true,
+      "keywords": [
+        "segments"
+      ]
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "legs"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "thorax",
+        "abdomen"
+      ]
+    }
+  },
+  "Spilomelinae": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "Expanse",
+        "wing",
+        "Primaries",
+        "tornus",
+        "Costa",
+        "secondaries",
+        "wings"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "eye",
+        "tongue",
+        "palpi",
+        "head"
+      ]
+    },
+    "antenna": {
+      "present": true,
+      "keywords": [
+        "antenna",
+        "segments"
+      ]
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "Spur",
+        "tibia",
+        "Tars",
+        "legs"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "thorax",
+        "abdomen"
+      ]
+    }
+  },
+  "Sosxetra grata": {
+    "wings": {
+      "present": false,
+      "keywords": []
+    },
+    "head": {
+      "present": false,
+      "keywords": []
+    },
+    "antenna": {
+      "present": false,
+      "keywords": []
+    },
+    "legs": {
+      "present": false,
+      "keywords": []
+    },
+    "body": {
+      "present": false,
+      "keywords": []
+    }
+  },
+  "Copaxa decrescens": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "Expanse",
+        "apex",
+        "Primaries",
+        "Costa",
+        "secondaries"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "head"
+      ]
+    },
+    "antenna": {
+      "present": true,
+      "keywords": [
+        "segments"
+      ]
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "legs"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "thorax",
+        "abdomen"
+      ]
+    }
+  },
+  "Lepidoptera": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "expanse",
+        "wing",
+        "forewing",
+        "apex",
+        "primaries",
+        "secondaries",
+        "tornus",
+        "hindwing",
+        "Costa",
+        "wings",
+        "vlugt"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "frons",
+        "Head",
+        "palpen",
+        "tongue",
+        "eyes",
+        "Palpi",
+        "Proboscis",
+        "Vertex",
+        "eye"
+      ]
+    },
+    "antenna": {
+      "present": true,
+      "keywords": [
+        "ciliat",
+        "segments",
+        "Antenna",
+        "sprieten",
+        "filiform",
+        "Antennae",
+        "pectinat"
+      ]
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "tars",
+        "femur",
+        "femora",
+        "tibia",
+        "Leg",
+        "spur",
+        "sporen",
+        "legs"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "body",
+        "Thorax",
+        "length",
+        "collar",
+        "abdomen",
+        "abdominal"
+      ]
+    }
+  },
+  "Tortricidae": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "wing",
+        "apex",
+        "costa",
+        "Forewing",
+        "Hindwing",
+        "wings"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "tongue",
+        "eyes",
+        "palpi",
+        "head"
+      ]
+    },
+    "antenna": {
+      "present": true,
+      "keywords": [
+        "ciliat",
+        "antenna",
+        "antennae",
+        "segments"
+      ]
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "spur",
+        "tibia",
+        "Legs"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "body",
+        "length",
+        "Abdomen",
+        "Thorax"
+      ]
+    }
+  },
+  "Amaxia": {
+    "wings": {
+      "present": true,
+      "keywords": [
+        "Expanse",
+        "wing",
+        "apex",
+        "Primaries",
+        "Costa",
+        "secondaries"
+      ]
+    },
+    "head": {
+      "present": true,
+      "keywords": [
+        "head"
+      ]
+    },
+    "antenna": {
+      "present": false,
+      "keywords": []
+    },
+    "legs": {
+      "present": true,
+      "keywords": [
+        "legs"
+      ]
+    },
+    "body": {
+      "present": true,
+      "keywords": [
+        "thorax",
+        "collar",
+        "abdomen"
+      ]
+    }
+  }
+}

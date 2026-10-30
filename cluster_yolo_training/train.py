@@ -39,7 +39,27 @@ def main():
     print("=" * 65)
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    yaml_path = os.path.join(script_dir, "dataset", "dataset.yaml")
+    dataset_dir = os.path.join(script_dir, "dataset")
+    yaml_path = os.path.join(dataset_dir, "dataset.yaml")
+
+    # Resolve model path locally if available in script directory
+    if not os.path.exists(args.model) and os.path.exists(os.path.join(script_dir, args.model)):
+        args.model = os.path.join(script_dir, args.model)
+
+    # Ensure dataset.yaml points to current location (works anywhere folder is copied)
+    with open(yaml_path, "w", encoding="utf-8") as fp:
+        fp.write(f"""path: {dataset_dir}
+train: images/train
+val: images/val
+
+names:
+  0: full-body
+  1: wing
+  2: leg
+  3: antenna
+  4: head
+  5: body
+""")
 
     # Load pretrained model
     model = YOLO(args.model)
