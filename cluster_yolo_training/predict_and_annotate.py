@@ -14,7 +14,8 @@ import argparse
 import glob
 import json
 import os
-from collections import defaultdict
+from collections import defaultdict, Counter
+import numpy as np
 from PIL import Image
 from ultralytics import YOLO
 
@@ -48,7 +49,64 @@ def is_protected_annotation(json_path):
         return True  # Erring on the side of caution
 
 
-def annotate_images(model, img_files, conf=0.25, iou=0.45, overwrite_ai=False):
+def score_prediction(result):
+    """
+    Computes an automated quality score (0-100) based on biological sanity checks:
+    - 1 full-body mask is mandatory (penalty -30 if missing, -30 if >2)
+    - Wing count <= 4 (penalty -25 if >4)
+    - Leg count <= 6 (penalty -20 if >6)
+    - Antenna count <= 2 (penalty -15 if >2)
+    - Head count <= 2 (penalty -20 if >2)
+    - Penalize low-confidence detections (<0.40)
+    """
+    if result.masks is None or len(result.masks) == 0:
+        return 0, "hard", ["No masks detected"]
+
+    classes = [result.names[int(c)] for c in result.boxes.cls.cpu().numpy()]
+    scores = result.boxes.conf.cpu().numpy()
+
+    mean_conf = float(np.mean(scores))
+    counts = Counter(classes)
+    penalty = 0
+    reasons = []
+
+    # 1. Full-body sanity check
+    fb = counts.get("full-body", 0)
+    if fb == 1:
+        pass
+    elif fb == 0:
+        penalty += 30
+        reasons.append("Missing full-body")
+    elif fb > 2:
+        penalty += 30
+        reasons.append(f"Multiple full-bodies ({fb})")
+
+    # 2. Implausible part counts
+    if counts.get("wing", 0) > 4:
+        penalty += 25
+        reasons.append(f"Too many wings ({counts['wing']})")
+    if counts.get("leg", 0) > 6:
+        penalty += 20
+        reasons.append(f"Too many legs ({counts['leg']})")
+    if counts.get("antenna", 0) > 2:
+        penalty += 15
+        reasons.append(f"Too many antennae ({counts['antenna']})")
+    if counts.get("head", 0) > 2:
+        penalty += 20
+        reasons.append(f"Multiple heads ({counts['head']})")
+
+    # 3. Weak detections (<0.40)
+    low_confs = sum(1 for s in scores if s < 0.40)
+    if low_confs > 0:
+        penalty += min(25, low_confs * 8)
+        reasons.append(f"{low_confs} weak parts")
+
+    final_score = max(0, min(100, int(mean_conf * 100 - penalty)))
+    tier = "clean" if final_score >= 70 and penalty == 0 else ("review" if final_score >= 45 else "hard")
+    return final_score, tier, reasons
+
+
+def annotate_images(model, img_files, conf=0.25, iou=0.45, overwrite_ai=False, weights_path="best.pt", sam_model=None):
     annotated_count = 0
     skipped_manual = 0
     skipped_existing_ai = 0
@@ -90,10 +148,23 @@ def annotate_images(model, img_files, conf=0.25, iou=0.45, overwrite_ai=False):
         shapes = []
         part_counts = defaultdict(int)
 
-        if result.masks is not None:
-            polygons = result.masks.xy  # Pixel coordinate contours
+        polygons = []
+        classes = []
+        confs = []
+
+        if result.boxes is not None and len(result.boxes) > 0:
             classes = result.boxes.cls.cpu().numpy()
             confs = result.boxes.conf.cpu().numpy()
+            boxes = result.boxes.xyxy.cpu().numpy()
+
+            if sam_model is not None:
+                # Use SAM to refine masks from YOLO bounding box prompts
+                sam_res = sam_model(img_path, bboxes=boxes, verbose=False)[0]
+                if sam_res.masks is not None:
+                    polygons = sam_res.masks.xy
+            
+            if not polygons and result.masks is not None:
+                polygons = result.masks.xy
 
             for poly, cls_id, score in zip(polygons, classes, confs):
                 if len(poly) < 3:
@@ -117,11 +188,17 @@ def annotate_images(model, img_files, conf=0.25, iou=0.45, overwrite_ai=False):
                     "kie_linking": []
                 })
 
+        score, tier, reasons = score_prediction(result)
+        tier_label = "clean_to_approve" if tier == "clean" else "hand_annotate"
+
         labelme_data = {
             "version": "5.0.1",
             "flags": {
                 "ai_generated": True,
-                "model": "yolov8n-seg-insects",
+                "quality_score": score,
+                "quality_tier": tier_label,
+                "reasons": reasons,
+                "model": os.path.basename(weights_path),
                 "status": "needs_human_review"
             },
             "checked": False,
@@ -141,14 +218,16 @@ def annotate_images(model, img_files, conf=0.25, iou=0.45, overwrite_ai=False):
             "track": track,
             "image": os.path.basename(img_path),
             "shapes": len(shapes),
-            "parts": dict(part_counts)
+            "parts": dict(part_counts),
+            "score": score,
+            "tier": tier
         })
 
     return annotated_count, skipped_manual, skipped_existing_ai, stats, species_report
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Auto-generate LabelMe JSON masks using trained YOLO-seg")
+    parser = argparse.ArgumentParser(description="Auto-generate LabelMe JSON masks using trained YOLO-seg / YOLO+SAM")
     parser.add_argument("--weights", type=str, default="cluster_yolo_training/weights/best.pt", help="Path to trained weights")
     parser.add_argument("--target", type=str, default="data/active_annotation_set", help="Target root folder")
     parser.add_argument("--track", type=str, choices=["all", "field", "inat"], default="all", help="Which track to annotate")
@@ -157,6 +236,8 @@ def main():
     parser.add_argument("--conf", type=float, default=0.25, help="Confidence threshold (default: 0.25)")
     parser.add_argument("--iou", type=float, default=0.45, help="IoU threshold (default: 0.45)")
     parser.add_argument("--overwrite-ai", action="store_true", help="Overwrite existing AI-generated JSONs (manual JSONs are ALWAYS kept safe)")
+    parser.add_argument("--use-sam", action="store_true", help="Use MobileSAM to refine mask contours from YOLO bounding box prompts")
+    parser.add_argument("--sam-weights", type=str, default="cluster_yolo_training/mobile_sam.pt", help="Path to SAM weights")
     args = parser.parse_args()
 
     if not os.path.exists(args.weights):
@@ -167,10 +248,39 @@ def main():
             print(f"❌ Weights not found at: {args.weights}")
             return
 
+    sam_model = None
+    if args.use_sam:
+        from ultralytics import SAM
+        import torch
+        base_path = os.path.join(os.path.dirname(__file__), "mobile_sam.pt")
+        if not os.path.exists(base_path):
+            base_path = "cluster_yolo_training/mobile_sam.pt"
+        if not os.path.exists(base_path):
+            base_path = "mobile_sam.pt"
+
+        sam_path = args.sam_weights if os.path.exists(args.sam_weights) else os.path.join(os.path.dirname(__file__), "weights", "mobile_sam_finetuned.pt")
+        if not os.path.exists(sam_path):
+            sam_path = base_path
+
+        if os.path.exists(base_path):
+            print(f"🧩 Initializing SAM from: {base_path}")
+            sam_model = SAM(base_path)
+            if sam_path != base_path and os.path.exists(sam_path):
+                ckpt = torch.load(sam_path, map_location="cpu", weights_only=False)
+                if isinstance(ckpt, dict) and "model_state_dict" in ckpt:
+                    sam_model.model.load_state_dict(ckpt["model_state_dict"])
+                    print(f"✔ Applied fine-tuned weights from: {sam_path}")
+                elif isinstance(ckpt, dict) and "mask_decoder_state_dict" in ckpt:
+                    sam_model.model.mask_decoder.load_state_dict(ckpt["mask_decoder_state_dict"])
+                    print(f"✔ Applied fine-tuned Mask Decoder from: {sam_path}")
+        else:
+            print(f"⚠️ Base SAM model not found at {base_path}, falling back to pure YOLO.")
+
     print("=" * 80)
     print("🦋 INSECT ANATOMY PRE-ANNOTATION PIPELINE")
     print("=" * 80)
     print(f"• Weights:   {args.weights}")
+    print(f"• Refinement:{'YOLO + MobileSAM' if sam_model is not None else 'Pure YOLO'}")
     print(f"• Target:    {args.target}")
     print(f"• Track:     {args.track}")
     print(f"• Species:   {args.species or 'ALL'}")
@@ -202,7 +312,7 @@ def main():
             
             imgs = []
             for ext in extensions:
-                imgs.extend(glob.glob(os.path.join(full_sp_path, ext)))
+                imgs.extend(glob.glob(os.path.join(full_sp_path, "**", ext), recursive=True))
             imgs = sorted(set(imgs))
             
             if args.limit_per_species:
@@ -218,7 +328,7 @@ def main():
 
     # Run inference & annotation
     annotated, skipped_man, skipped_ai, stats, species_report = annotate_images(
-        model, all_selected_imgs, conf=args.conf, iou=args.iou, overwrite_ai=args.overwrite_ai
+        model, all_selected_imgs, conf=args.conf, iou=args.iou, overwrite_ai=args.overwrite_ai, weights_path=args.weights, sam_model=sam_model
     )
 
     print("\n" + "=" * 80)

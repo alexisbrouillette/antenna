@@ -86,22 +86,61 @@ To run it and load annotations:
 
 ---
 
-## 🎯 Targeted Annotation Backlog Manager
+## ⚡ Useful Commands Cheat Sheet
 
-To avoid loading thousands of unannotated images in X-AnyLabeling, we use `annotation_backlog.py`. This script dynamically manages an active subset of images to annotate. It targets species that have **fewer than 5 annotations**, and exposes up to 8 candidate images per species (giving you options if some images have poor quality). As soon as a species reaches 5 annotations, its unannotated candidates are automatically removed from the backlog.
+Here are the primary commands for the active annotation, sync, dataset reconstruction, and training workflow:
 
-### How to use it:
+### 1. Re-annotate Active Set with AI
+Runs the trained YOLO-seg model to generate or update polygon masks for unannotated images in AnyLabeling. **Your human-verified annotations and manual edits are 100% protected and will never be overwritten.**
+```bash
+# Re-predict all images in the active backlog using the latest weights
+python cluster_yolo_training/predict_and_annotate.py --overwrite-ai
 
-1. **Populate the Backlog Workspace:**
-   Run the backlog script to automatically build a curated workspace in `data/active_annotation_set/`:
-   ```bash
-   python annotation_backlog.py
-   ```
-2. **Open in X-AnyLabeling:**
-   Launch the tool and open the folder `data/active_annotation_set/`. You will see all your existing annotations and a selection of candidate images for species that still need coverage.
-3. **Sync Your Progress Back:**
-   After you finish an annotation session, run the sync command to push all newly created `.json` files back into your master dataset directory (`data/antenna_field_images/`):
-   ```bash
-   python annotation_backlog.py sync
-   ```
+# Re-predict with MobileSAM refinement (sharp promptable mask boundaries)
+python cluster_yolo_training/predict_and_annotate.py --use-sam --overwrite-ai
+
+# Re-predict only the Field Camera Trap track or iNaturalist track
+python cluster_yolo_training/predict_and_annotate.py --track field --overwrite-ai
+python cluster_yolo_training/predict_and_annotate.py --track inat --overwrite-ai
+
+# Re-predict a single species (for quick checks)
+python cluster_yolo_training/predict_and_annotate.py --species "Eacles_imperialis" --overwrite-ai
+```
+
+### 1b. Benchmark: Pure YOLO vs. YOLO + SAM
+Compare segmentation accuracy and generate side-by-side 4-panel visual comparison figures (`[Original]` | `[Ground Truth]` | `[Pure YOLO]` | `[YOLO + SAM]`):
+```bash
+python cluster_yolo_training/compare_yolo_sam.py --num-samples 10
+```
+
+### 2. Annotation Backlog & Triage
+```bash
+# Check status & sync all verified annotations from active set to master storage
+python annotation_backlog.py sync
+
+# Triage & rank images (Top 40 high-confidence in clean_to_approve/, Bottom 20 edge cases in hand_annotate/)
+python annotation_backlog.py triage
+
+# Evacuate verified images to master storage and refill active slots with fresh candidates
+python annotation_backlog.py replenish
+
+# Approve all clean candidates for a species at once
+python annotation_backlog.py approve "Eacles imperialis"
+```
+
+### 3. Rebuild Dataset & Train
+```bash
+# 1. Rebuild the YOLO/SAM dataset from all verified annotations (field + degraded iNat)
+python cluster_yolo_training/build_dataset.py
+
+# 2. Train YOLO11s-seg on GPU cluster
+cd cluster_yolo_training
+sbatch run_cluster.sh
+# Or interactive GPU: python train.py --model yolo11s-seg.pt --epochs 100 --batch 16 --device 0
+
+# 3. Fine-Tune MobileSAM Mask Decoder (3-5 min on GPU)
+sbatch run_cluster_sam.sh
+# Or interactive GPU: python finetune_sam.py --epochs 30 --batch-size 4 --lr 0.0001 --device 0
+```
+
 

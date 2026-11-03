@@ -38,9 +38,9 @@ echo "Checking requirements..."
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# 4. Run Training
+# 4. Run Training (11.2M Small model, 100 epochs)
 echo "Starting training..."
-python train.py --epochs 80 --batch 16 --device 0
+python train.py --model yolov8s-seg.pt --epochs 100 --batch 16 --device 0
 
 echo "=========================================================="
 echo "Training completed at $(date)"

@@ -59,6 +59,15 @@ def collect_verified_annotations():
     samples = []
     seen_stems = set()
 
+    # Auto-extract antenna_field_images.zip if field images are not yet extracted (e.g. fresh clone)
+    existing_field_imgs = glob.glob(os.path.join(FIELD_DIR, "*.jpg"))
+    zip_path = os.path.join(PROJECT_ROOT, "data", "antenna_field_images.zip")
+    if len(existing_field_imgs) < 10 and os.path.exists(zip_path):
+        print(f"📦 Extracting field images from {os.path.basename(zip_path)}...")
+        import zipfile
+        with zipfile.ZipFile(zip_path, "r") as zip_ref:
+            zip_ref.extractall(FIELD_DIR)
+
     # 1. Field camera trap annotations (ind_*.json)
     field_jsons = sorted(glob.glob(os.path.join(FIELD_DIR, "ind_*.json")))
     for jf in field_jsons:

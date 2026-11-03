@@ -26,3 +26,5 @@ scratch/
 
 # Active annotation subset (temporary workspace)
 data/active_annotation_set/
+*.pt
+cluster_yolo_training/runs/
