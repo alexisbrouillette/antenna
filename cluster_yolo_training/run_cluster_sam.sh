@@ -1,11 +1,12 @@
 #!/bin/bash
 # ==============================================================================
-# SLURM Batch Script: Fine-Tune MobileSAM Mask Decoder on GPU Cluster
+# SLURM Cluster Batch Submission Script - MobileSAM Fine-Tuning
 # ==============================================================================
-#SBATCH --job-name=sam_insects
+#SBATCH --job-name=sam_finetune
+#SBATCH --account=def-dgravel_gpu
 #SBATCH --output=sam_train_%j.log
 #SBATCH --error=sam_train_%j.err
-#SBATCH --time=00:30:00
+#SBATCH --time=02:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
@@ -13,36 +14,31 @@
 #SBATCH --mem=16G
 
 echo "=========================================================="
-echo "Starting MobileSAM Fine-Tuning on Insect Anatomy"
+echo "Starting MobileSAM Fine-Tuning on GPU Cluster"
 echo "Date: $(date)"
 echo "Node: $(hostname)"
-echo "CUDA Device: $CUDA_VISIBLE_DEVICES"
+echo "CUDA Devices: $CUDA_VISIBLE_DEVICES"
 echo "=========================================================="
 
-# 1. Load modules if on standard HPC cluster (e.g. Alliance / Compute Canada)
+# 1. Load modules on Compute Canada / Alliance
 if command -v module &> /dev/null; then
-    module load python/3.10 cuda cudnn 2>/dev/null || true
+    module load opencv cuda cudnn 2>/dev/null || true
 fi
 
 # 2. Virtual environment setup
-if [ -z "$VIRTUAL_ENV" ]; then
-    if [ ! -d "venv" ]; then
-        echo "Creating virtual environment..."
-        python3 -m venv venv
-    fi
-    source venv/bin/activate
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -f "$SCRIPT_DIR/../env/bin/activate" ]; then
+    source "$SCRIPT_DIR/../env/bin/activate"
+elif [ -f "$SCRIPT_DIR/venv/bin/activate" ]; then
+    source "$SCRIPT_DIR/venv/bin/activate"
 fi
 
-# 3. Check dependencies
-pip install --upgrade pip
-pip install -r requirements.txt
-
-# 4. Run MobileSAM Fine-Tuning (Freezes 6M image encoder, trains 4M mask decoder with Dice loss)
+# 3. Run MobileSAM Fine-Tuning (Freezes 6M image encoder, trains 4M mask decoder with Dice loss)
 echo "Launching finetune_sam.py..."
+cd "$SCRIPT_DIR"
 python finetune_sam.py --epochs 30 --batch-size 4 --lr 0.0001 --device 0
 
 echo "=========================================================="
 echo "Fine-tuning completed at $(date)"
 echo "Saved weights: weights/mobile_sam_finetuned.pt"
 echo "=========================================================="
-

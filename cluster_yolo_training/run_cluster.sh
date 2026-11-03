@@ -1,11 +1,12 @@
 #!/bin/bash
 # ==============================================================================
-# SLURM Cluster Batch Submission Script (Compute Canada / Slurm / Any GPU cluster)
+# SLURM Cluster Batch Submission Script (Compute Canada / Slurm / fir)
 # ==============================================================================
 #SBATCH --job-name=yolo_insects
+#SBATCH --account=def-dgravel_gpu
 #SBATCH --output=yolo_train_%j.log
 #SBATCH --error=yolo_train_%j.err
-#SBATCH --time=01:00:00
+#SBATCH --time=02:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
@@ -19,31 +20,25 @@ echo "Node: $(hostname)"
 echo "CUDA Devices: $CUDA_VISIBLE_DEVICES"
 echo "=========================================================="
 
-# 1. Load modules if on standard HPC cluster (e.g. Compute Canada / Alliance)
+# 1. Load modules on Compute Canada / Alliance
 if command -v module &> /dev/null; then
-    module load python/3.10 cuda cudnn 2>/dev/null || true
+    module load opencv cuda cudnn 2>/dev/null || true
 fi
 
-# 2. Virtual environment setup (creates one if not already active)
-if [ -z "$VIRTUAL_ENV" ]; then
-    if [ ! -d "venv" ]; then
-        echo "Creating virtual environment..."
-        python3 -m venv venv
-    fi
-    source venv/bin/activate
+# 2. Virtual environment setup
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -f "$SCRIPT_DIR/../env/bin/activate" ]; then
+    source "$SCRIPT_DIR/../env/bin/activate"
+elif [ -f "$SCRIPT_DIR/venv/bin/activate" ]; then
+    source "$SCRIPT_DIR/venv/bin/activate"
 fi
 
-# 3. Install required packages
-echo "Checking requirements..."
-pip install --upgrade pip
-pip install -r requirements.txt
-
-# 4. Run Training (11.2M Small model, 100 epochs)
+# 3. Run Training (11.2M Small model, 100 epochs)
 echo "Starting training..."
-python train.py --model yolov8s-seg.pt --epochs 100 --batch 16 --device 0
+cd "$SCRIPT_DIR"
+python train.py --model yolo11s-seg.pt --epochs 100 --batch 16 --device 0
 
 echo "=========================================================="
 echo "Training completed at $(date)"
 echo "Trained weights are saved in: weights/best.pt"
 echo "=========================================================="
-
