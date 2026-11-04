@@ -24,6 +24,7 @@ def main():
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     dataset_dir = os.path.join(script_dir, "dataset_pose")
+    os.makedirs(dataset_dir, exist_ok=True)
     yaml_path = os.path.join(dataset_dir, "dataset_pose.yaml")
 
     # Ensure absolute path in dataset_pose.yaml
@@ -90,3 +91,4 @@ names:
 
 if __name__ == "__main__":
     main()
+

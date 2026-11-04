@@ -272,6 +272,8 @@ names:
     print("=" * 70)
 
 if __name__ == "__main__":
-    src_dir = "cluster_yolo_training/dataset"
-    dst_dir = "cluster_yolo_training/dataset_pose"
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    src_dir = os.path.join(script_dir, "dataset")
+    dst_dir = os.path.join(script_dir, "dataset_pose")
     convert_dataset(src_dir, dst_dir)
+
