@@ -26,5 +26,8 @@ scratch/
 
 # Active annotation subset (temporary workspace)
 data/active_annotation_set/
+data/verified_archive/
+cluster_yolo_training/dataset_pose/
 *.pt
+*.onnx
 cluster_yolo_training/runs/

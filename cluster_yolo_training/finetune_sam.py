@@ -147,8 +147,19 @@ def main():
     # Determine device
     if args.device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    elif args.device.isdigit():
+        device = torch.device(f"cuda:{args.device}")
     else:
         device = torch.device(args.device)
+
+    # Resolve paths relative to script directory if needed
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    if not os.path.exists(args.sam_base) and os.path.exists(os.path.join(script_dir, os.path.basename(args.sam_base))):
+        args.sam_base = os.path.join(script_dir, os.path.basename(args.sam_base))
+    if not os.path.exists(args.dataset) and os.path.exists(os.path.join(script_dir, "dataset")):
+        args.dataset = os.path.join(script_dir, "dataset")
+    if not os.path.isabs(args.output_dir):
+        args.output_dir = os.path.join(script_dir, "weights")
 
     print("=" * 80)
     print("🦋 FINE-TUNING MOBILESAM MASK DECODER ON INSECT ANATOMY")

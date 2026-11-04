@@ -3,15 +3,15 @@
 # SLURM Cluster Batch Submission Script (Compute Canada / Slurm / fir)
 # ==============================================================================
 #SBATCH --job-name=yolo_insects
-#SBATCH --account=def-dgravel_gpu
+#SBATCH --account=def-dgravel
 #SBATCH --output=yolo_train_%j.log
 #SBATCH --error=yolo_train_%j.err
-#SBATCH --time=02:00:00
+#SBATCH --time=3:0:0
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=4
-#SBATCH --gres=gpu:1
-#SBATCH --mem=16G
+#SBATCH --cpus-per-task=6
+#SBATCH --gpus=nvidia_h100_80gb_hbm3_2g.20gb:1
+#SBATCH --mem=128G
 
 echo "=========================================================="
 echo "Starting YOLO-Seg Insect Anatomy Training on GPU Cluster"
